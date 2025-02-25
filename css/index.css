@@ -1,0 +1,12 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+#log {
+    overflow: auto;
+    border: 4px double black;
+    float: right;
+    width: 20%;
+    height: 95%;
+};
