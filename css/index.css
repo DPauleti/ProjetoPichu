@@ -1,12 +1,57 @@
 html, body {
-    height: 100%;
     overflow: hidden;
+    height: 100%;
+}
+
+#website {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#gameBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: larger;
+    
+}
+
+#buttons {
+    height: 10%;
 }
 
 #log {
     overflow: auto;
     border: 4px double black;
-    float: right;
     width: 20%;
     height: 95%;
-};
+}
+
+#houseBoard {
+    border: 4px double black;
+    width: 95%;
+    height: 20%;
+    text-align: center;
+}
+
+#playerBoard {
+    border: 4px double black;
+    width: 95%;
+    height: 20%;
+    text-align: center;
+}
+
+#central {
+    display: flex;
+    justify-content: space-around;
+    border: 4px double black;
+    width: 95%;
+    height: 20%;
+    text-align: center;
+}
+
+#deck {
+    height:100%;
+}
