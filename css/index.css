@@ -1,12 +1,22 @@
 html, body {
     overflow: hidden;
     height: 100%;
+    font-family: "Luckiest Guy", cursive;
+
+}
+body{
+    margin: 0;
+    padding: 20px;
+    background: #fff url('https://images.pexels.com/photos/172276/pexels-photo-172276.jpeg?cs=srgb&dl=pexels-fwstudio-33348-172276.jpg&fm=jpg') no-repeat center center;
+    background-size: cover;
 }
 
 #website {
     display: flex;
     justify-content: space-between;
     height: 100%;
+    background-color: rgb(30, 136, 31);
+    border-radius: 10px;
 }
 
 #gameBoard {
@@ -15,41 +25,64 @@ html, body {
     flex-direction: column;
     justify-content: space-around;
     font-size: larger;
+    padding: 50px;
     
+}
+#gameBoard h1 {
+    color: white;
+    font-weight: 400;
+  font-style: normal;
 }
 
 #buttons {
     height: 10%;
 }
 
+#resetButton{
+    font-size: larger;
+    margin: 20px;
+    font-family: "Luckiest Guy", cursive;
+
+}
+
 #log {
     overflow: auto;
-    border: 4px double black;
+    border: 8px double black;
+    border-radius: 25px;
+    font-size: large;
     width: 20%;
-    height: 95%;
+    height: 92%;
+    background-color: white;
+    margin: 20px;
 }
 
 #houseBoard {
-    border: 4px double black;
+    border: 8px double black;
+    border-radius: 25px;
     width: 95%;
     height: 20%;
     text-align: center;
+    background-color: white;
 }
 
 #playerBoard {
-    border: 4px double black;
+    border: 8px double black;
+    border-radius: 25px;
     width: 95%;
     height: 20%;
-    text-align: center;
+    text-align: center;background-color:  white;
+
 }
 
 #central {
     display: flex;
     justify-content: space-around;
-    border: 4px double black;
+    border: 8px double black;
+    border-radius: 25px;
     width: 95%;
     height: 20%;
     text-align: center;
+    background-color: white;
 }
 
 #deck {
