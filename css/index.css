@@ -41,6 +41,7 @@ body {
   padding: 3rem;
 }
 #gameBoard h1 {
+  text-align: center;
   color: white;
   font-weight: 400;
   font-style: normal;
@@ -80,10 +81,8 @@ body {
 }
 
 @media (max-width: 768px) {
-  html,
   body {
     overflow: auto;
-    height: 100vh;
     box-sizing: border-box;
   }
 
@@ -97,31 +96,25 @@ body {
     height: 8%;
   }
   #resetButton {
-    padding: 5px 8px;
     font-size: 1.1rem;
+    padding: 5px 8px;
   }
 
   #gameBoard {
     padding: 2rem;
-    gap: 0.625rem;
+    gap: 1.25rem;
   }
-  #gameBoard h1 {
-    text-align: center;
-  }
-
   .board {
     height: 7.5rem;
-    margin: 0.625rem;
+    margin: 0.5rem;
   }
-
   #deck {
     height: 7.5rem;
   }
 
   #log {
-    overflow: auto;
     height: 15rem;
-    width: 90%; /**/
+    width: 90%;
     background-color: rgba(200, 232, 200, 0.6);
   }
 }
