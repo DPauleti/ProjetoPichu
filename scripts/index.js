@@ -31,7 +31,7 @@ function createDeck() {
 } */
 
 
-//FUNCTIONS
+//FUNCTIONS - Backend
 //Deal random card
 function randomCard() {
     //console.log("Dealing random card")
@@ -48,10 +48,14 @@ function randomCard() {
 function dealRandomCard(player) {
     console.log("Dealing random card to " + player);
 
+    const card = randomCard();
+
     if (player === "user") {
-        handUser.push(randomCard());
+        handUser.push(card);
+        displayCard(card);
     } else if (player === "dealer") {
-        handDealer.push(randomCard());
+        handDealer.push(card);
+        //Display card dealer when function is done
     } else {
         console.log("Invalid player");
     }
@@ -112,7 +116,7 @@ function userTurn() {
 function startGame() {
     resetGamestate();
 
-    for (let i = 0; i < 2; i++) { //Deal 2 cards to each player
+    for (let i = 0; i < 2; i++) { // Deal 2 cards to each player
         dealRandomCard("user");
         dealRandomCard("dealer");
     }
@@ -134,5 +138,18 @@ function startGame() {
 // resetGamestate();
 // showGamestate();
 // console.log(deck);
-startGame();
-console.log(deck);
+// startGame();
+// console.log(deck);
+
+
+//FUNCTIONS - Frontend
+//Display card
+function displayCard(card) {
+    const imageSection = document.getElementById("userBoard"); //Function only works for user. Add player parameter later
+
+    const cardImage = document.createElement("img");
+    cardImage.src = `../img/${card}.jpg`;
+    cardImage.classList.add("card");
+
+    imageSection.appendChild(cardImage);
+}
