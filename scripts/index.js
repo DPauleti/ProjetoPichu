@@ -87,17 +87,42 @@ function showGamestate() {
 
 //Calculate score (LUCAS)
 
-//Ace value
+//Ace value (LUCAS)
+
+//Blackjack
 
 //Bust
 
 //Check winner
 
 //Turn order
+let turnActive = "";
+
+function dealerTurn() {
+    console.log("Dealer turn");
+    turnActive = "dealer";
+}
+
+function userTurn() {
+    console.log("User turn");
+    turnActive = "user";
+}
+
+//Game start function
+function startGame() {
+    resetGamestate();
+
+    for (let i = 0; i < 2; i++) { //Deal 2 cards to each player
+        dealRandomCard("user");
+        dealRandomCard("dealer");
+    }
+
+    showGamestate();
+    userTurn();
+    console.log("Game started");
+}
 
 //House algorithm
-
-//Blackjack
 
 //Hidden cards
 
@@ -109,3 +134,5 @@ function showGamestate() {
 // resetGamestate();
 // showGamestate();
 // console.log(deck);
+startGame();
+console.log(deck);
