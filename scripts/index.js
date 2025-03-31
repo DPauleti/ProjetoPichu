@@ -45,18 +45,27 @@ function randomCard() {
 }
 
 //Deal to hand
-function dealRandomCard(player) {
+function dealRandomCard(player, hidden = false) {
     console.log("Dealing random card to " + player);
 
     const card = randomCard();
+    //Function will not work unless turnActive is set
+    //turnActive = "user";
 
-    if (player === "user") {
-        handUser.push(card);
-        displayCard(card);
-    } else if (player === "dealer") {
-        handDealer.push(card);
-        //Display card dealer when function is done
-    } else {
+    if (player === "user") { //Checks to see if player and turn line up
+        if (turnActive === "user" || turnActive === "start") {
+            handUser.push(card);
+            displayCard(card, "user");
+            log(cardMessage(card));}
+        else {
+            console.log("User turn not active");}} //Prints for easier debugging
+    else if (player === "dealer") {
+        if (turnActive === "dealer" || turnActive === "start") {
+            handDealer.push(card);
+            displayCard(card, "dealer", hidden);}
+        else {
+            console.log("Dealer turn not active");}}
+    else {
         console.log("Invalid player");
     }
 }
@@ -112,14 +121,26 @@ function userTurn() {
     turnActive = "user";
 }
 
+//Stand
+function stand() {
+    console.log("User stand");
+    log(messageDictionary("stand", "user"));
+    dealerTurn();
+    //Reveal hidden card
+}
+
 //Game start function
 function startGame() {
     resetGamestate();
 
-    for (let i = 0; i < 2; i++) { // Deal 2 cards to each player
-        dealRandomCard("user");
-        dealRandomCard("dealer");
-    }
+    log(messageDictionary("start"));
+
+    turnActive = "start"; //Set turn to user
+
+    dealRandomCard("user"); //Deal 2 cards to each player
+    dealRandomCard("dealer");
+    dealRandomCard("user");
+    dealRandomCard("dealer", true); //Dealer gets hidden card
 
     showGamestate();
     userTurn();
@@ -144,12 +165,97 @@ function startGame() {
 
 //FUNCTIONS - Frontend
 //Display card
-function displayCard(card) {
-    const imageSection = document.getElementById("userBoard"); //Function only works for user. Add player parameter later
+function displayCard(card, player, hidden = false) {
+    let imageSection;
+    if (player == "user") { //Check if player is user or dealer
+        imageSection = document.getElementById("userBoard");
+    } else if (player == "dealer") {
+        imageSection = document.getElementById("dealerBoard");
+    }
 
     const cardImage = document.createElement("img");
-    cardImage.src = `../img/${card}.jpg`;
-    cardImage.classList.add("card");
 
-    imageSection.appendChild(cardImage);
+    if (hidden) {
+        cardImage.src = "../img/baralho.webp"; //Hidden card image
+        cardImage.setAttribute("data-card", card); //Store card name
+        cardImage.classList.add("hidden-card"); //Add class for selection later
+    } else {
+        cardImage.src = `../img/${card}.jpg`; //Get card image
+    }
+
+    cardImage.classList.add("card"); //Add class to card
+    imageSection.appendChild(cardImage); //Add card to image section
+}
+
+//Reveal hidden card
+function revealHiddenCards() {
+    document.querySelectorAll(".hidden-card").forEach((img) => {
+        const cardName = img.getAttribute("data-card"); //Get stored card name
+        img.src = `../img/${cardName}.jpg`; //Update src to show the actual card
+        img.classList.remove("hidden-card"); //Remove hidden class
+    });
+}
+
+//Log messages - Function to display messages in the log section
+function log(message) {
+    const logSection = document.getElementById("logContent");
+    const logMessage = document.createElement("p");
+    logMessage.textContent = message;
+    logSection.appendChild(logMessage);
+}
+
+//Clear log messages
+function clearLog () {
+
+}
+
+//Card to message - Function to convert card name to message
+function cardMessage(card) {
+    let cardValue = card.slice(0, -1); //Get the value of the card (e.g., "A", "2", "3", ..., "K")
+    let cardSuit = card.slice(-1); //Get the suit of the card (e.g., "C", "D", "H", "S")
+    
+    var suits = { //Get suit name
+        'C': 'Paus',
+        'D': 'Ouros',
+        'H': 'Copas',
+        'S': 'Espadas'
+    };
+
+    var values = { //Get value name
+        '2': "2",
+        '3': "3",
+        '4': "4",
+        '5': "5",
+        '6': "6",
+        '7': "7",
+        '8': "8",
+        '9': "9",
+        '0': "10",
+        'J': "Valete",
+        'Q': "Rainha",
+        'K': "Rei",
+        'A': "Ás"
+    };
+
+    return `${values[cardValue]} de ${suits[cardSuit]}`;
+}
+
+//Message dictionary (UNFINISHED) -  Function called to return messages based on game events
+function messageDictionary(trigger, player = "") {
+    var messageBase = { //Implement better dictionary
+        "start": "O jogo começou!",
+        "hit": `pediu mais uma carta!`,
+        "stand": `parou!`,
+        "bust": `estourou!`,
+        "blackjack": `fez um blackjack!`,
+        "win": `ganhou!`,
+        "lose": `perdeu!`, //Add messages to every relevant function
+    };
+
+    var playerName = {
+        "user": "Você ",
+        "dealer": "A casa "
+    }
+
+    return `${playerName[player]}${messageBase[trigger]}`
 }
