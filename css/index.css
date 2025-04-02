@@ -22,13 +22,15 @@ body {
 
 #buttons {
   height: 12%;
+  
 }
 
 #resetButton {
   font-family: "Luckiest Guy", cursive;
-  border-radius: 3px;
-  font-size: 1.2rem;
+  border-radius: 5px;
+  font-size: 1.5rem;
   margin: 1.25rem 1rem;
+  padding-top: 0.5rem;
 }
 
 #gameBoard {
@@ -44,14 +46,14 @@ body {
   color: white;
   font-weight: 400;
   font-style: normal;
-  margin: 0;
+  margin: 1%;
   text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.5);
 }
 
 .board {
   border: 0.5rem double black;
   border-radius: 25px;
-  height: 20%;
+  height: 30%;
   text-align: center;
   background-color: #fff;
 }
@@ -61,12 +63,12 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20%;
+  height: 30%;
   text-align: center;
 }
 
 #deck {
-  height: 135%;
+  height: 120%;
 }
 
 #log {
@@ -76,9 +78,17 @@ body {
   font-size: 1rem;
   width: 20%;
   height: 92%;
-  background-color: #f7f7f7;
+  background-color: #f7f7f758;
   margin: 1rem;
   padding: 0.3rem;
+}
+#log h1{
+  color: #fff;
+  font-size: 20px;
+}
+#log p{
+  color: #fff;
+  font-size: 20px;
 }
 
 @media (max-width: 768px) {
