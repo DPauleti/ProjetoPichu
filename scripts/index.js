@@ -1,6 +1,6 @@
 // Let's go gambling!!!
 // BlackJack with Jack Black
-
+// Chicken Jockey
 
 //CONSTANTS
 //Create deck array
@@ -56,6 +56,7 @@ function dealRandomCard(player, hidden = false) {
         if (turnActive === "user" || turnActive === "start") {
             handUser.push(card);
             displayCard(card, "user");
+            //log(); //Log dealing card message
             log(cardMessage(card));}
         else {
             console.log("User turn not active");}} //Prints for easier debugging
@@ -88,29 +89,36 @@ function resetGamestate() {
     resetDeck();
     resetHands();
     console.log("Gamestate reset");
+    //Reset visual aspects
 }
 
-//Show current gamestate
+//Show current gamestate (debug)
 function showGamestate() {
     console.log("User hand: " + handUser);
     console.log("Dealer hand: " + handDealer);
 }
 
-//Create score array (LUCAS)
+//Create score array (LUCAS) - Dicionário de valores
 
-//Calculate score (LUCAS)
+//Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
 
-//Ace value (LUCAS)
+//Ace value (LUCAS) - Se um jogador tiver um Ás, ele pode ser 1 ou 11. Se o jogador tiver um Ás e o valor total for maior que 21, o Ás vale 1. Se o jogador não tiver um Ás, o valor total é a soma dos valores das cartas.
 
-//Blackjack
+//Blackjack - Calculate score
+function blackjack() {
+};
 
-//Bust
+//Bust - Calculate score
 
-//Check winner
+//End Game
+//1. User blackjack
+//2. User bust
+//3. Dealer wins
+//4. Dealer bust
+function endGame(player) {
+};
 
 //Turn order
-let turnActive = "";
-
 function dealerTurn() {
     console.log("Dealer turn");
     turnActive = "dealer";
@@ -121,12 +129,13 @@ function userTurn() {
     turnActive = "user";
 }
 
-//Stand
+//Stand (UNFINISHED)
 function stand() {
     console.log("User stand");
     log(messageDictionary("stand", "user"));
     dealerTurn();
     //Reveal hidden card
+    //Validate dealer score
 }
 
 //Game start function
@@ -147,9 +156,9 @@ function startGame() {
     console.log("Game started");
 }
 
-//House algorithm
+//Stand
 
-//Hidden cards
+//House algorithm
 
 //TESTING
 // dealRandomCard("user");
@@ -204,15 +213,15 @@ function log(message) {
     logSection.appendChild(logMessage);
 }
 
-//Clear log messages
+//Clear log messages (UNFINISHED)
 function clearLog () {
 
 }
 
 //Card to message - Function to convert card name to message
 function cardMessage(card) {
-    let cardValue = card.slice(0, -1); //Get the value of the card (e.g., "A", "2", "3", ..., "K")
-    let cardSuit = card.slice(-1); //Get the suit of the card (e.g., "C", "D", "H", "S")
+    let cardValue = card.slice(0, -1); //Get the value of the card
+    let cardSuit = card.slice(-1); //Get the suit of the card
     
     var suits = { //Get suit name
         'C': 'Paus',
@@ -254,8 +263,15 @@ function messageDictionary(trigger, player = "") {
 
     var playerName = {
         "user": "Você ",
-        "dealer": "A casa "
+        "dealer": "A casa ",
+        "" : ""
     }
 
     return `${playerName[player]}${messageBase[trigger]}`
 }
+
+//Change score display
+
+//Dealer hidden score
+
+//Win / Lose display

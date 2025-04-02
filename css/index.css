@@ -91,6 +91,10 @@ body {
   font-size: 20px;
 }
 
+.card {
+  height: 7.5rem;
+}
+
 @media (max-width: 768px) {
   body {
     overflow: auto;
