@@ -22,7 +22,7 @@
     <section id="website">
         <!-- Área dos botões -->
         <header id="buttons">
-            <button id="resetButton">Reset</button>
+            <button id="resetButton" onclick="resetGamestate()">Reset</button>
         </header>
         <!-- Área de jogo principal -->
         <main id="gameBoard">
@@ -32,17 +32,17 @@
         <!-- Área da Casa -->
         <section id="casa">
             <h1>Casa</h1>
-            <p>17</p>
+            <p></p>
         </section>
             <!-- Área Central -->
             <section id="central">
                 <img src="../img/baralho.webp" id="deck" onclick="dealRandomCard('user')"> 
-                <button id="stopButton">STAND!</button>
+                <button id="stopButton" onclick="stand()">STAND!</button>
             </section>
             <!-- Área do Jogador -->
             <section id="jogador">
                 <h1>Jogador</h1>
-                <p>11</p>
+                <p></p>
             </section>
             <section class="board" id="userBoard">
             </section>
