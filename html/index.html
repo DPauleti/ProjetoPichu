@@ -8,8 +8,14 @@
     <script src="../scripts/index.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Luckiest+Guy&display=swap" rel="stylesheet">
-    <title>Protótipo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <title>Black Jack</title>
 </head>
 
 <body>
@@ -23,19 +29,26 @@
             <!-- Área da Casa -->
             <section class="board" id="dealerBoard">
             </section>
-            <h1>Área da Casa</h1>
+        <!-- Área da Casa -->
+        <section id="casa">
+            <h1>Casa</h1>
+            <p>17</p>
+        </section>
             <!-- Área Central -->
             <section id="central">
                 <img src="../img/baralho.webp" id="deck" onclick="dealRandomCard('user')"> 
+                <button id="stopButton">STAND!</button>
             </section>
             <!-- Área do Jogador -->
-            <h1>Área do Jogador</h1>
+            <section id="jogador">
+                <h1>Jogador</h1>
+                <p>11</p>
+            </section>
             <section class="board" id="userBoard">
             </section>
         </main>
         <!-- Registro do jogo -->
         <aside id="log">
-            <h1>Registro do Jogo</h1>
             <div id="logContent">
                 <p id="logText">Clique no baralho para começar a jogar!</p>
             </div>
