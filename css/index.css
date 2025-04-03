@@ -43,7 +43,8 @@ body {
   width: 15%;
   margin: 1.25rem 1rem;
   padding-top: 0.5rem;
-}#padding: ;resetButton {
+}
+#resetButton {
   font-family: "Luckiest Guy", cursive;
   border-radius: 5px;
   font-size: 1.5rem;
