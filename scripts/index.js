@@ -16,6 +16,9 @@ let deck = deckBase.slice();
 let handUser = [];
 let handDealer = [];
 
+//Game started flag
+let gameStarted = false;
+
 //Deck creator
 //Shouldn't be needed, unless deck array is deleted by chimps    
 /* 
@@ -88,6 +91,9 @@ function resetHands() {
 function resetGamestate() {
     resetDeck();
     resetHands();
+    clearLog();
+    gameStarted = false; //Reset game started flag
+    turnActive = ""; //Reset turn active flag
     console.log("Gamestate reset");
     //Reset visual aspects
 }
@@ -144,16 +150,17 @@ function startGame() {
 
     log(messageDictionary("start"));
 
-    turnActive = "start"; //Set turn to user
+    turnActive = "start"; //Set turn to start
 
     dealRandomCard("user"); //Deal 2 cards to each player
     dealRandomCard("dealer");
     dealRandomCard("user");
     dealRandomCard("dealer", true); //Dealer gets hidden card
 
-    showGamestate();
-    userTurn();
-    console.log("Game started");
+    //showGamestate();
+    userTurn(); //Set turn to user
+    gameStarted = true; //Set game started flag to true
+    //console.log("Game started");
 }
 
 //Stand
@@ -210,6 +217,7 @@ function log(message) {
     const logSection = document.getElementById("logContent");
     const logMessage = document.createElement("p");
     logMessage.textContent = message;
+    logMessage.classList.add("log-message"); //Add class to message
     logSection.appendChild(logMessage);
 }
 
@@ -274,4 +282,12 @@ function messageDictionary(trigger, player = "") {
 
 //Dealer hidden score
 
-//Win / Lose display
+//Deck clicked
+function deckClicked() {
+    if (gameStarted) {
+        dealRandomCard("user"); //Deal card to user
+    }
+    else {
+        startGame(); //Prints for easier debugging
+    }
+}
