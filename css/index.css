@@ -176,12 +176,12 @@ body {
   }
 
   .card {
-    height: 13rem; 
+    height: 9rem; 
   }
 
-.hidden-card {
-  height: 14rem;
-}
+  .hidden-card {
+    height: 9rem;
+  }
 
   .board {
     height: 9.5rem;
@@ -189,7 +189,7 @@ body {
   }
 
   #deck {
-    width: 8rem;
+    height: 10rem;
   }
 
   #log {
@@ -199,7 +199,6 @@ body {
   }
   .card {
     height: 9rem; 
-    margin-bottom: 3px;
   }
   
   .hidden-card{
