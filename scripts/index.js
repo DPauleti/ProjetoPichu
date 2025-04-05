@@ -107,6 +107,9 @@ function showGamestate() {
 //Create score array (LUCAS) - Dicionário de valores
 
 //Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
+function calculateScore(hand) {
+    let total = 0;
+}
 
 //Ace value (LUCAS) - Se um jogador tiver um Ás, ele pode ser 1 ou 11. Se o jogador tiver um Ás e o valor total for maior que 21, o Ás vale 1. Se o jogador não tiver um Ás, o valor total é a soma dos valores das cartas.
 
@@ -192,7 +195,7 @@ function displayCard(card, player, hidden = false) {
     const cardImage = document.createElement("img");
 
     if (hidden) {
-        cardImage.src = "../img/baralho.webp"; //Hidden card image
+        cardImage.src = "../img/verso.jpg"; //Hidden card image
         cardImage.setAttribute("data-card", card); //Store card name
         cardImage.classList.add("hidden-card"); //Add class for selection later
     } else {

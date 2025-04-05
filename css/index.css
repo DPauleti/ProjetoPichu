@@ -44,9 +44,9 @@ body {
   border: 5px solid rgb(255, 255, 255);
   background-color: #ff0000;
   color: rgb(255, 255, 255);
-  font-size: 2.75rem;
-  height: 8rem;
-  width: 12rem;
+  font-size: 2.2rem;
+  height: 6.5rem;
+  width: 9.5rem;
   padding: 0.5rem;
 }
 
@@ -68,11 +68,11 @@ body {
 }
 
 #gameBoard h1 {
-  font-size: 2.25rem;
+  font-size: 2.2rem;
 }
 
 #gameBoard p {
-  font-size: 2.75rem;
+  font-size: 2.7rem;
 }
 
 #casa,
@@ -87,9 +87,13 @@ body {
 .board {
   border: 0.5rem double black;
   border-radius: 25px;
-  height: 30%;
+  height: 14rem;
   text-align: center;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 #central {
@@ -97,12 +101,18 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20%;
+  height: auto;
   text-align: center;
+  gap: 1rem;
 }
 
 #deck {
-  height: 120%;
+  height: 13rem;
+}
+
+.card, .hidden-card {
+  height: 11rem; 
+  border-radius: 10px;
 }
 
 #log {
@@ -121,16 +131,6 @@ body {
   color: #fff;
   font-size: 1.25rem;
   padding: 0.5rem;
-}
-
-.card {
-  height: 13rem; 
-}
-
-.hidden-card{
-  height: 14rem;
-  
-
 }
 
 @media (max-width: 768px) {
@@ -172,16 +172,16 @@ body {
   }
 
   #gameBoard p {
-    font-size: 2.25rem;.card {
-  height: 13rem; 
-}
-
-.hidden-card{
-  height: 14rem;
-  
-
-}
+    font-size: 2.25rem;
   }
+
+  .card {
+    height: 13rem; 
+  }
+
+.hidden-card {
+  height: 14rem;
+}
 
   .board {
     height: 9.5rem;
@@ -203,8 +203,6 @@ body {
   }
   
   .hidden-card{
-    height: 9.5rem;
-    
-  
+    height: 9.5rem;  
   }
 }
