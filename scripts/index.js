@@ -16,8 +16,24 @@ let deck = deckBase.slice();
 let handUser = [];
 let handDealer = [];
 
-//Game started flag
+//Game started and ended flag
 let gameStarted = false;
+let gameEnded = false;
+
+//Aces value flag
+let acesLow = false;
+
+//Score variables
+let scoreUser = 0;
+let scoreDealer = 0;
+
+//Create score array (LUCAS) - Dicionário de valores
+cardsScoreBase = {
+    "A": 11, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "0": 10, "J": 10, "Q": 10, "K": 10
+}
+
+//Set score array to base array
+cardsScore = {...cardsScoreBase}; //Create a copy of the base array to operate on
 
 //Deck creator
 //Shouldn't be needed, unless deck array is deleted by chimps    
@@ -47,31 +63,176 @@ function randomCard() {
     return card;
 }
 
-//Deal to hand
-function dealRandomCard(player, hidden = false) {
-    console.log("Dealing random card to " + player);
+//Deal to hand (UNFINISHED)
+function dealRandomCard(player, hidden = false, logDraw = true) {
+    //console.log("Dealing random card to " + player);
 
     const card = randomCard();
     //Function will not work unless turnActive is set
     //turnActive = "user";
 
-    if (player === "user") { //Checks to see if player and turn line up
-        if (turnActive === "user" || turnActive === "start") {
-            handUser.push(card);
-            displayCard(card, "user");
-            //log(); //Log dealing card message
-            log(cardMessage(card));}
-        else {
-            console.log("User turn not active");}} //Prints for easier debugging
+    if (player === "user") { //Check if player is user or dealer    
+        handUser.push(card);
+        displayCard(card, "user");
+        //log(messageDictionary("hit", player));
+        if (logDraw) { //Log dealing card message
+            log(cardMessage(card)); //Log dealing card message
+        } 
+    } 
     else if (player === "dealer") {
-        if (turnActive === "dealer" || turnActive === "start") {
-            handDealer.push(card);
-            displayCard(card, "dealer", hidden);}
-        else {
-            console.log("Dealer turn not active");}}
+        handDealer.push(card);
+        displayCard(card, "dealer", hidden);
+        if (logDraw) { //Log dealing card message
+            log(cardMessage(card));}
+    } 
     else {
         console.log("Invalid player");
     }
+}
+
+//Show current gamestate (debug)
+function showGamestate() {
+    console.log("User hand: " + handUser);
+    console.log("Dealer hand: " + handDealer);
+}
+//Retrieve card value from array
+function getCardValue(card) {
+    return cardsScore[card[0]];
+}
+
+//Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
+function calculateScore(player = "") {
+    let hand = player === "user" ? handUser : handDealer; //Get hand based on player
+    let score = 0;
+    hand.forEach(card => score += getCardValue(card)); //Sum values of cards in hand
+    updateScore(player, score); //Update score variable
+    if (!(turnActive == "user" & player == "dealer")) { //Prevent score message for dealer on game start
+        log(messageDictionary("score", player) + scoreMessage(score)); //Log score message
+    }
+    if (bust(score)) { //Check if score is bust 
+        if (aces(hand) & !acesLow) { //Check if hand has aces and if ace value has not been altered
+            switchAceValue(); //Switch ace value to 1
+            return calculateScore(player); //Recalculate score
+        } else {
+            log(messageDictionary("bust", player))//Log bust message
+            endGame(player === "user" ? false : true)//End game, checking who busted
+        }
+    }
+    if (blackjack(score)) {
+        if (!(turnActive != "dealer" & player == "dealer")) { //Prevent dealer blackjack on game start
+            log(messageDictionary("blackjack", player)); //Log blackjack message
+            endGame(player === "user" ? true : false); //End game, checking who has blackjack
+        }     
+    }
+    return score;
+}
+
+//Update score variables
+function updateScore(player, score) {
+    if (player === "user") { //Check if player is user or dealer
+        scoreUser = score; //Set user score
+    } else if (player === "dealer") {
+        scoreDealer = score; //Set dealer score
+    }
+}
+
+//Ace checker
+function aces(hand) {
+    return hand.filter(card => card.startsWith("A")).length > 0; //Boolean to check if there are Aces in hand
+}
+
+//Ace value (LUCAS) - Se um jogador tiver um Ás, ele pode ser 1 ou 11. Se o jogador tiver um Ás e o valor total for maior que 21, o Ás vale 1. Se o jogador não tiver um Ás, o valor total é a soma dos valores das cartas.
+function switchAceValue() {
+    acesLow = true; //Set ace value to low
+    cardsScore["A"] = 1; //Set ace value to 1
+    //console.log("Ace value switched to low");
+};
+
+//Blackjack - Calculate score
+function blackjack(score) {
+    if (score == 21) { //Check if score is blackjack
+        return true
+    } else { //Check if dealer has blackjack
+        return false; //Return false if not blackjack
+    }
+};
+
+//Bust - Calculate score
+function bust(score) {
+    if (score > 21) { //Check if score is greater than 21
+        return true; //Return true if bust
+    } else {
+        return false; //Return false if not bust
+    }
+}
+
+//Game start function
+function startGame() {
+    log(messageDictionary("start"));
+
+    turnActive = "start"; //Set turn to start
+
+    dealRandomCard("user", false, false); //Deal 2 cards to each player
+    dealRandomCard("dealer", false, false); 
+    dealRandomCard("user", false, false);
+    dealRandomCard("dealer", true, false); //Dealer gets hidden card
+
+    //showGamestate();
+    userTurn(); //Set turn to user
+    gameStarted = true; //Set game started flag to true
+    displayScore("user"); //Display user score
+    displayScore("dealer", true); //Display dealer score with hidden cards
+    //console.log("Game started");
+}
+
+//End Game
+//1. User blackjack
+//2. User bust
+//3. Dealer wins
+//4. Dealer bust
+function endGame(userWin) { //Boolean to check if user won or lost
+    if (userWin) {
+        log(messageDictionary("win", "user"));
+    } else {
+        log(messageDictionary("lose", "user"));
+    }
+    gameEnded = true;//Toggle game ended flag
+};
+
+//Turn order
+function dealerTurn() {
+    //console.log("Dealer turn");
+    turnActive = "dealer";
+}
+
+function userTurn() {
+    //console.log("User turn");
+    turnActive = "user";
+}
+
+//Stand
+function stand() {
+    //console.log("User stand");
+    if (turnActive === "user" & !gameEnded) { //Check if turn is user
+        log(messageDictionary("stand", "user"));
+        dealerTurn();
+        revealHiddenCards(); //Reveal hidden card
+        displayScore("dealer"); //Validate dealer score
+        setTimeout(houseAction, 1000);} //Run house algorithm after 1 second delay
+}
+
+//House algorithm
+function houseAction() {
+    let player = "dealer"; //Set player to dealer
+    if (!gameEnded) {
+        if (scoreUser >= scoreDealer) {
+            log(messageDictionary("hit", player)); //Log hit message
+            dealRandomCard(player); //Deal card to dealer
+            displayScore(player); //Update score display
+            setTimeout(houseAction, 1000); //Recursion for dealer action
+        } else {
+            endGame(false) //End game on dealer win
+        }}
 }
 
 //Reset deck
@@ -87,123 +248,28 @@ function resetHands() {
     //console.log("Hands reset");
 }
 
+function resetAces() {
+    acesLow = false; //Reset ace value
+    cardsScore = {...cardsScoreBase}; //Reset score array to base array
+    //console.log("Aces reset");
+}
+
 //Reset gamestate
 function resetGamestate() {
     resetDeck();
     resetHands();
-    clearLog();
+    resetAces(); //Reset ace value
     gameStarted = false; //Reset game started flag
+    gameEnded = false; //Reset game ended flag
     turnActive = ""; //Reset turn active flag
-    console.log("Gamestate reset");
-    //Reset visual aspects
-}
-
-//Show current gamestate (debug)
-function showGamestate() {
-    console.log("User hand: " + handUser);
-    console.log("Dealer hand: " + handDealer);
-}
-
-//Create score array (LUCAS) - Dicionário de valores
-cardsScore = {
-    "AC": 1, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "0C": 10, "JC": 10, "QC": 10, "KC": 10,
-    "AD": 1, "2D": 2, "3D": 3, "4D": 4, "5D": 5, "6D": 6, "7D": 7, "8D": 8, "9D": 9, "0D": 10, "JD": 10, "QD": 10, "KD": 10,
-    "AH": 1, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "0H": 10, "JH": 10, "QH": 10, "KH": 10,
-    "AS": 1, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "0S": 10, "JS": 10, "QS": 10, "KS": 10 
-}
-
-//Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
-//Ace value (LUCAS) - Se um jogador tiver um Ás, ele pode ser 1 ou 11. Se o jogador tiver um Ás e o valor total for maior que 21, o Ás vale 1. Se o jogador não tiver um Ás, o valor total é a soma dos valores das cartas.
-
-function getCardValue(card) {
-    return cardsScore[card];
-}
-
-function countAces(hand) {
-    return hand.filter(card => card.startsWith("A")).length;
-}
-
-function calculateScore(hand) {
-    let score = 0;
-    for (let card of hand) {
-        score += getCardValue(card);
-    }
-    let aceCount = countAces(hand);
-    while (aceCount > 0 && score + 10 <= 21) {
-        score += 10;
-        aceCount--;
-    }
-    return score;
+    resetScoreDisplay(); //Reset score display
+    resetCardDisplay(); //Reset cards on board
+    log(messageDictionary("reset")); //Log reset message
+    //console.log("Gamestate reset");
 }
 
 
-//Blackjack - Calculate score
-function blackjack() {
-};
 
-//Bust - Calculate score
-
-//End Game
-//1. User blackjack
-//2. User bust
-//3. Dealer wins
-//4. Dealer bust
-function endGame(player) {
-};
-
-//Turn order
-function dealerTurn() {
-    console.log("Dealer turn");
-    turnActive = "dealer";
-}
-
-function userTurn() {
-    console.log("User turn");
-    turnActive = "user";
-}
-
-//Stand (UNFINISHED)
-function stand() {
-    console.log("User stand");
-    log(messageDictionary("stand", "user"));
-    dealerTurn();
-    //Reveal hidden card
-    //Validate dealer score
-}
-
-//Game start function
-function startGame() {
-    resetGamestate();
-
-    log(messageDictionary("start"));
-
-    turnActive = "start"; //Set turn to start
-
-    dealRandomCard("user"); //Deal 2 cards to each player
-    dealRandomCard("dealer");
-    dealRandomCard("user");
-    dealRandomCard("dealer", true); //Dealer gets hidden card
-
-    //showGamestate();
-    userTurn(); //Set turn to user
-    gameStarted = true; //Set game started flag to true
-    //console.log("Game started");
-}
-
-//Stand
-
-//House algorithm
-
-//TESTING
-// dealRandomCard("user");
-// dealRandomCard("dealer");
-// showGamestate();
-// console.log(deck);
-// resetGamestate();
-// showGamestate();
-// console.log(deck);
-// startGame();
-// console.log(deck);
 
 
 //FUNCTIONS - Frontend
@@ -239,6 +305,13 @@ function revealHiddenCards() {
     });
 }
 
+//Clear cards - Function to clear cards from the board
+function resetCardDisplay() {
+    document.getElementById("userBoard").innerHTML = "";
+    document.getElementById("dealerBoard").innerHTML = "";
+}
+
+
 //Log messages - Function to display messages in the log section
 function log(message) {
     const logSection = document.getElementById("logContent");
@@ -248,11 +321,10 @@ function log(message) {
     logSection.appendChild(logMessage);
 }
 
-//Clear log messages (UNFINISHED)
-function clearLog () {
-
+//Reset log - Function to clear log messages
+function resetLog() {
+    document.getElementById("logContent").innerHTML = ""; //Clear log messages
 }
-
 //Card to message - Function to convert card name to message
 function cardMessage(card) {
     let cardValue = card.slice(0, -1); //Get the value of the card
@@ -284,16 +356,23 @@ function cardMessage(card) {
     return `${values[cardValue]} de ${suits[cardSuit]}`;
 }
 
-//Message dictionary (UNFINISHED) -  Function called to return messages based on game events
+//Score to message - Function to convert score to message
+function scoreMessage(score) {
+    return `${score} pontos`;
+}
+
+//Message dictionary - Function called to return messages based on game events
 function messageDictionary(trigger, player = "") {
     var messageBase = { //Implement better dictionary
-        "start": "O jogo começou!",
+        "start": "O jogo começou!", //Add messages to every relevant function
         "hit": `pediu mais uma carta!`,
         "stand": `parou!`,
         "bust": `estourou!`,
         "blackjack": `fez um blackjack!`,
         "win": `ganhou!`,
-        "lose": `perdeu!`, //Add messages to every relevant function
+        "lose": `perdeu!`, 
+        "reset": `Preparando um novo jogo...`,
+        "score": "tem um total de ",
     };
 
     var playerName = {
@@ -306,24 +385,33 @@ function messageDictionary(trigger, player = "") {
 }
 
 //Change score display
+function displayScore(player, hiddenCards = false) {   
+    let score = calculateScore(player); //Calculate score
+    let handId = player === "user" ? "userScore" : "dealerScore"; //Get hand id based on player
 
-//Dealer hidden score
+    if (hiddenCards) { //If hidden cards are present, set score to "??"
+        score = "??";
+    }
+
+    document.getElementById(handId).textContent = score;
+}
+
+//Reset score display
+function resetScoreDisplay() {
+    document.getElementById("userScore").textContent = ""; //Reset user score display
+    document.getElementById("dealerScore").textContent = ""; //Reset dealer score display
+}
 
 //Deck clicked
 function deckClicked() {
     if (gameStarted) {
-        dealRandomCard("user"); //Deal card to user
-        updateScoreDisplay(); //Update score display
+        if (turnActive === "user" && !gameEnded) { //Check if turn is user
+            log(messageDictionary("hit", "user")); //Log hit message
+            dealRandomCard("user"); //Deal card to user
+            displayScore("user"); //Update score display
+        }
     }
     else {
-        startGame(); //Prints for easier debugging
+        startGame(); //Start game if not started
     }
-}
-
-function updateScoreDisplay() {
-    const userScore = calculateScore(handUser);
-    const dealerScore = calculateScore(handDealer);
-
-    document.getElementById("userScore").textContent = userScore;
-    document.getElementById("dealerScore").textContent = dealerScore;
 }

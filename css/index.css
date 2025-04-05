@@ -175,14 +175,6 @@ body {
     font-size: 2.25rem;
   }
 
-  .card {
-    height: 9rem; 
-  }
-
-  .hidden-card {
-    height: 9rem;
-  }
-
   .board {
     height: 9.5rem;
     margin: 0.5rem;
@@ -197,6 +189,7 @@ body {
     width: 90%;
     background-color: rgba(200, 232, 200, 0.6);
   }
+  
   .card {
     height: 9rem; 
   }
