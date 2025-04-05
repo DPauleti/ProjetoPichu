@@ -105,13 +105,37 @@ function showGamestate() {
 }
 
 //Create score array (LUCAS) - Dicionário de valores
-
-//Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
-function calculateScore(hand) {
-    let total = 0;
+cardsScore = {
+    "AC": 1, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "0C": 10, "JC": 10, "QC": 10, "KC": 10,
+    "AD": 1, "2D": 2, "3D": 3, "4D": 4, "5D": 5, "6D": 6, "7D": 7, "8D": 8, "9D": 9, "0D": 10, "JD": 10, "QD": 10, "KD": 10,
+    "AH": 1, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "0H": 10, "JH": 10, "QH": 10, "KH": 10,
+    "AS": 1, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "0S": 10, "JS": 10, "QS": 10, "KS": 10 
 }
 
+//Calculate score (LUCAS) - Calcula valor total dado uma mão e o dicionário de valores
 //Ace value (LUCAS) - Se um jogador tiver um Ás, ele pode ser 1 ou 11. Se o jogador tiver um Ás e o valor total for maior que 21, o Ás vale 1. Se o jogador não tiver um Ás, o valor total é a soma dos valores das cartas.
+
+function getCardValue(card) {
+    return cardsScore[card];
+}
+
+function countAces(hand) {
+    return hand.filter(card => card.startsWith("A")).length;
+}
+
+function calculateScore(hand) {
+    let score = 0;
+    for (let card of hand) {
+        score += getCardValue(card);
+    }
+    let aceCount = countAces(hand);
+    while (aceCount > 0 && score + 10 <= 21) {
+        score += 10;
+        aceCount--;
+    }
+    return score;
+}
+
 
 //Blackjack - Calculate score
 function blackjack() {
@@ -289,8 +313,17 @@ function messageDictionary(trigger, player = "") {
 function deckClicked() {
     if (gameStarted) {
         dealRandomCard("user"); //Deal card to user
+        updateScoreDisplay(); //Update score display
     }
     else {
         startGame(); //Prints for easier debugging
     }
+}
+
+function updateScoreDisplay() {
+    const userScore = calculateScore(handUser);
+    const dealerScore = calculateScore(handDealer);
+
+    document.getElementById("userScore").textContent = userScore;
+    document.getElementById("dealerScore").textContent = dealerScore;
 }
