@@ -13,7 +13,6 @@ body {
   background: #fff
     url("https://images.pexels.com/photos/172276/pexels-photo-172276.jpeg?cs=srgb&dl=pexels-fwstudio-33348-172276.jpg&fm=jpg")
     no-repeat center center;
-  background-size: cover;
 }
 #resetButton,
 #stopButton,
@@ -98,7 +97,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 30%;
+  height: 20%;
   text-align: center;
 }
 
@@ -125,7 +124,13 @@ body {
 }
 
 .card {
-  height: 7.5rem;
+  height: 13rem; 
+}
+
+.hidden-card{
+  height: 14rem;
+  
+
 }
 
 @media (max-width: 768px) {
@@ -167,7 +172,15 @@ body {
   }
 
   #gameBoard p {
-    font-size: 2.25rem;
+    font-size: 2.25rem;.card {
+  height: 13rem; 
+}
+
+.hidden-card{
+  height: 14rem;
+  
+
+}
   }
 
   .board {
@@ -176,12 +189,22 @@ body {
   }
 
   #deck {
-    width: 12rem;
+    width: 8rem;
   }
 
   #log {
     height: 15rem;
     width: 90%;
     background-color: rgba(200, 232, 200, 0.6);
+  }
+  .card {
+    height: 9rem; 
+    margin-bottom: 3px;
+  }
+  
+  .hidden-card{
+    height: 9.5rem;
+    
+  
   }
 }
